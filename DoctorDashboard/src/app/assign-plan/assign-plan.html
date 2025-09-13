@@ -1,0 +1,83 @@
+<div class="container mx-auto p-8 bg-white shadow-lg rounded-xl my-10">
+    <h3 class="text-3xl font-bold text-gray-800 mb-2">Assigning wellness plan to patient {{patientDetail?.fname}}</h3>
+    <p class="text-lg text-gray-600"><b>Name:</b> {{patientDetail?.fname}} {{patientDetail?.lname}}</p>
+    <p class="text-lg text-gray-600"><b>Age:</b> {{patientDetail?.age}}</p>
+    <p class="text-lg text-gray-600"><b>Medical History:</b> {{patientDetail?.medicalHistory}}</p>
+    <p class="text-lg text-gray-600 mb-6"><b>Contact:</b> {{patientDetail?.email}}</p>
+    
+    <hr class="my-6 border-gray-300">
+    
+    <div class="flex items-center space-x-4 mb-6">
+        <label class="flex items-center cursor-pointer">
+            <input type="radio" name="planType" value="existing" [(ngModel)]="planType" (change)="clearForm()" class="form-radio text-blue-500 h-5 w-5">
+            <span class="ml-2 text-gray-700">Assign Existing Plan</span>
+        </label>
+        <label class="flex items-center cursor-pointer">
+            <input type="radio" name="planType" value="new" [(ngModel)]="planType" (change)="clearForm()" class="form-radio text-blue-500 h-5 w-5">
+            <span class="ml-2 text-gray-700">Create a new plan and assign</span>
+        </label>
+    </div>
+
+    @if(planType==='existing'){
+        <div class="bg-gray-100 p-6 rounded-lg shadow-inner">
+            <h4 class="text-xl font-semibold mb-4 text-gray-800">Select an Existing Plan</h4>
+            <div class="flex flex-col space-y-4">
+                <select [(ngModel)]="selectedId" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>Select a plan</option>
+                    @for(item of wellnessPlan; track item.id){
+                        <option [value]="item.id">
+                            {{ item.planName }}
+                        </option>
+                    }
+                </select>
+                <button type="button" [disabled]="!selectedId" (click)="updatePatient()" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Assign Selected Plan
+                </button>
+            </div>
+        </div>
+    }
+
+    @if(planType==='new'){
+        <div class="bg-gray-100 p-6 rounded-lg shadow-inner mt-6">
+            <h4 class="text-xl font-semibold mb-4 text-gray-800">Create a New Plan</h4>
+            <input type="text" [(ngModel)]="newPlan.planName" placeholder="Enter Plan Name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+            
+            <div class="space-y-4">
+                @for(day of newPlan.tasks; track $index; let dayIndex = $index){
+                    <div class="p-4 border rounded-lg shadow-sm bg-white">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-gray-700">Day {{ $index + 1 }}</span>
+                            <button (click)="removeDay($index)" class="text-red-500 hover:text-red-700 transition-colors duration-200">
+                                Remove Day
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            @for(task of day.tasks; track $index){
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" [(ngModel)]="day.tasks[$index]" placeholder="Enter Task Name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <button (click)="removeTask(dayIndex, $index)" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        <button (click)="addTask($index)" [disabled]="day.tasks.length >= 2" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm">
+                            Add Task
+                        </button>
+                    </div>
+                }
+            </div>
+            
+            <div class="flex space-x-4 mt-6">
+                <button (click)="addDay()" class="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition-colors duration-200">
+                    Add New Day
+                </button>
+                <button (click)="createAndAssignPlan()" [disabled]="!newPlan.planName || newPlan.tasks.length === 0" class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Create and Assign Plan
+                </button>
+            </div>
+        </div>
+    }
+</div>
