@@ -1,0 +1,252 @@
+<div
+  class="container p-5 flex flex-col align-top min-h-[60vh] w-[60vw] my-20 mx-auto bg-[#ebe6d5] rounded-lg shadow-lg"
+>
+  <!-- Title -->
+  <h2 class="bg-white text-xl font-semibold flex justify-center py-4 shadow-sm rounded">Sign Up</h2>
+
+  <!-- Role Selector -->
+  <div class="w-full h-[10%] flex justify-center items-center mt-4">
+    <select
+      [(ngModel)]="selectedForm"
+      class="text-amber-200 bg-black w-[150px] text-center h-[40px] rounded border border-amber-50"
+    >
+      <option value="form2" class="bg-black">Patient</option>
+      <option value="form1" class="bg-black">Doctor</option>
+    </select>
+  </div>
+
+  <div class="mt-4">
+    <!-- Patient Form -->
+    <form
+      *ngIf="selectedForm === 'form2'"
+      [formGroup]="patientSignUpForm"
+      (ngSubmit)="onPatientSubmit()"
+      class="grid grid-cols-2 gap-4 p-4"
+    >
+      <!-- First Name + Last Name -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">First Name</legend>
+        <input
+          formControlName="fname"
+          type="text"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Last Name</legend>
+        <input
+          formControlName="lname"
+          type="text"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="patientSignUpForm.get('fname')?.invalid && patientSignUpForm.get('fname')?.touched"
+      >
+        First Name is required
+      </div>
+
+      <!-- Age + Phone -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Age</legend>
+        <input
+          formControlName="age"
+          type="number"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Phone Number</legend>
+        <input
+          formControlName="phone"
+          type="tel"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="patientSignUpForm.get('age')?.invalid && patientSignUpForm.get('age')?.touched"
+      >
+        Invalid Age
+      </div>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="patientSignUpForm.get('phone')?.invalid && patientSignUpForm.get('phone')?.touched"
+      >
+        Invalid Phone Number
+      </div>
+
+      <!-- Password + Confirm Password -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Password</legend>
+        <input
+          formControlName="password"
+          type="password"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Confirm Password</legend>
+        <input
+          formControlName="cpassword"
+          type="password"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="
+          patientSignUpForm.get('password')?.invalid && patientSignUpForm.get('password')?.touched
+        "
+      >
+        Password is required
+      </div>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="
+          patientSignUpForm.get('cpassword')?.invalid && patientSignUpForm.get('cpassword')?.touched
+        "
+      >
+        Confirm Password is required
+      </div>
+
+      <!-- Medical History -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] rounded col-span-2">
+        <legend class="text-[10px] text-[#00B050]">Medical History</legend>
+        <textarea
+          formControlName="medicalHistory"
+          rows="1"
+          class="w-full p-[4px] text-sm text-black focus:outline-none resize-none"
+        ></textarea>
+      </fieldset>
+
+      <!-- Submit -->
+      <input
+        type="submit"
+        [disabled]="patientSignUpForm.invalid"
+        class="col-span-2 p-2 bg-[#00B050] text-white w-28 mx-auto text-sm cursor-pointer rounded hover:bg-green-700 transition"
+        value="Register"
+      />
+    </form>
+
+    <!-- Doctor Form -->
+    <form
+      *ngIf="selectedForm === 'form1'"
+      [formGroup]="doctorSignUpForm"
+      (ngSubmit)="onDoctorSubmit()"
+      class="grid grid-cols-2 gap-4 p-4"
+    >
+      <!-- First Name -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">First Name</legend>
+        <input
+          formControlName="fname"
+          type="text"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Last Name</legend>
+        <input
+          formControlName="lname"
+          type="text"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="doctorSignUpForm.get('fname')?.invalid && doctorSignUpForm.get('fname')?.touched"
+      >
+        First Name is required
+      </div>
+
+      <!-- Total Experience -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Total Experience (Years)</legend>
+        <input
+          formControlName="experience"
+          type="number"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Phone Number</legend>
+        <input
+          formControlName="phone"
+          type="tel"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="
+          doctorSignUpForm.get('experience')?.invalid && doctorSignUpForm.get('experience')?.touched
+        "
+      >
+        Invalid Input
+      </div>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="doctorSignUpForm.get('phone')?.invalid && doctorSignUpForm.get('phone')?.touched"
+      >
+        Invalid Phone Number
+      </div>
+
+      <!-- Password -->
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Password</legend>
+        <input
+          formControlName="password"
+          type="password"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <fieldset class="border-2 bg-white p-1 border-[#00B050] h-[50px] rounded col-span-1">
+        <legend class="text-[10px] text-[#00B050]">Confirm Password</legend>
+        <input
+          formControlName="cpassword"
+          type="password"
+          class="w-full p-[4px] text-sm text-black focus:outline-none"
+        />
+      </fieldset>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="
+          doctorSignUpForm.get('password')?.invalid && doctorSignUpForm.get('password')?.touched
+        "
+      >
+        Password is required
+      </div>
+      <div
+        class="col-span-2 text-red-500 text-xs"
+        *ngIf="
+          doctorSignUpForm.get('cpassword')?.invalid && doctorSignUpForm.get('cpassword')?.touched
+        "
+      >
+        Confirm Password is required
+      </div>
+
+      <!-- Submit -->
+      <input
+        type="submit"
+        [disabled]="doctorSignUpForm.invalid"
+        class="col-span-2 p-2 bg-[#00B050] text-white w-28 mx-auto text-sm cursor-pointer rounded hover:bg-green-700 transition"
+        value="Register"
+      />
+    </form>
+
+    <!-- Message -->
+    <p class="text-center text-sm mt-2">{{ msg }}</p>
+
+    <!-- Login Link -->
+    <div class="text-center mt-4">
+      <button
+        (click)="toLogInPage()"
+        class="underline text-blue-600 text-sm hover:text-blue-800 transition"
+      >
+        Already have an account? Click here to sign in
+      </button>
+    </div>
+  </div>
+</div>
